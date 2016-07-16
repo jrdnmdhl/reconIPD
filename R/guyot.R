@@ -34,7 +34,6 @@ guyot <- function(digizeit, pub.risk, tot.events = "NA", tags = list()){
           cen[lower[i]:upper[i]]<-0
           n.censor[i]<-0
         }
-
         if (n.censor[i]>0){
           cen.t<-rep(0,n.censor[i])
           for (j in 1:n.censor[i]){
@@ -176,11 +175,11 @@ guyot <- function(digizeit, pub.risk, tot.events = "NA", tags = list()){
     }
   }
   #Output IPD
-  if(length(tags) > 0) IPD <- data.frame(times = t.IPD, flags = event.IPD, tags, stringsAsFactors = FALSE)
-  else IPD <- data.frame(times = t.IPD, flags = event.IPD, stringsAsFactors = FALSE)
+  if(length(tags) > 0) IPD <- data.frame(time = t.IPD, flag = event.IPD, tags, stringsAsFactors = FALSE)
+  else IPD <- data.frame(time = t.IPD, flag = event.IPD, stringsAsFactors = FALSE)
 
   plot(digizeit$t, digizeit$s, col = "red", type = "s", ylim = c(0, 1))
-  lines(survfit(Surv(times,flags)~1, data=IPD), col = "blue", conf.int = FALSE, mark.time = FALSE)
+  lines(survfit(Surv(time,flag)~1, data=IPD), col = "blue", conf.int = FALSE, mark.time = FALSE)
 
   return(IPD)
 }

@@ -52,10 +52,19 @@ doSurvFix = function(survDf){
 reconIPD = function(path, tags = list()){
   survData = read.xlsx(path, "Survival") %>% doSurvFix
   riskData = read.xlsx(path, "Number at Risk") %>% doRiskIndex(survData)
-  miscInputs = read.xlsx(path, "Misc")
-  if(!is.na(miscInputs[1,1])) totEvents = miscInputs[1,2]
-  else if(!is.na(miscInputs[1,2])) totEvents = riskData$N - miscInputs[1,2]
-  else totEvents = "NA"
+  miscInputs = read.xlsx(path, "Events")
+
+  totEvents = "NA"
+  if(nrow(miscInputs) > 0){
+    if(!is.na(miscInputs[1,1])){
+      totEvents = miscInputs[1,1]
+    }
+    else{
+      if(!is.na(miscInputs[1,2])){
+        totEvents = riskData$N - miscInputs[1,2]
+      }
+    }
+  }
   guyot(survData, riskData, tot.events = totEvents, tags)
 }
 
