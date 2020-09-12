@@ -49,19 +49,25 @@ doSurvFix = function(survDf){
 
 #' reconIPD
 #' @export
-reconIPD = function(path, tags = list()){
-  survData = read.xlsx(path, "Survival") %>% doSurvFix
-  riskData = read.xlsx(path, "Number at Risk") %>% doRiskIndex(survData)
-  miscInputs = read.xlsx(path, "Events")
-
-  totEvents = "NA"
-  if(nrow(miscInputs) > 0){
-    if(!is.na(miscInputs[1,1])){
-      totEvents = miscInputs[1,1]
-    }
-    else{
-      if(!is.na(miscInputs[1,2])){
-        totEvents = riskData$N - miscInputs[1,2]
+reconIPD = function(path, tags = list(), surv = NULL, risk = NULL, events = NULL){
+  if (missing(path)) {
+    survData <- doSurvFix(surv)
+    riskData <- doRiskIndex(risk, survData)
+    totEvents <- events
+  } else {
+    survData = read.xlsx(path, "Survival") %>% doSurvFix
+    riskData = read.xlsx(path, "Number at Risk") %>% doRiskIndex(survData)
+    miscInputs = read.xlsx(path, "Events")
+    
+    totEvents = "NA"
+    if(nrow(miscInputs) > 0){
+      if(!is.na(miscInputs[1,1])){
+        totEvents = miscInputs[1,1]
+      }
+      else{
+        if(!is.na(miscInputs[1,2])){
+          totEvents = riskData$N - miscInputs[1,2]
+        }
       }
     }
   }
