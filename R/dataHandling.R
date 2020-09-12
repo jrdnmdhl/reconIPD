@@ -53,7 +53,11 @@ reconIPD = function(path, tags = list(), surv = NULL, risk = NULL, events = NULL
   if (missing(path)) {
     survData <- doSurvFix(surv)
     riskData <- doRiskIndex(risk, survData)
-    totEvents <- events
+    if (!is.null(events)) {
+      totEvents <- events
+    } else {
+      totEvents <- "NA"
+    }
   } else {
     survData = read.xlsx(path, "Survival") %>% doSurvFix
     riskData = read.xlsx(path, "Number at Risk") %>% doRiskIndex(survData)
