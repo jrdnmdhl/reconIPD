@@ -1,5 +1,5 @@
 #' Algorithm of Guyot et al from http://www.ncbi.nlm.nih.gov/pmc/articles/PMC3313891/
-guyot <- function(digizeit, pub.risk, tot.events = "NA", tags = list()){
+guyot <- function(digizeit, pub.risk, tot.events = "NA", tags = list(), xlabel = "Time", ylabel = "Survival"){
 
   #Read in survival times read by digizeit
   t.S<-digizeit[,2]
@@ -178,7 +178,7 @@ guyot <- function(digizeit, pub.risk, tot.events = "NA", tags = list()){
   if(length(tags) > 0) IPD <- data.frame(time = t.IPD, flag = event.IPD, tags, stringsAsFactors = FALSE)
   else IPD <- data.frame(time = t.IPD, flag = event.IPD, stringsAsFactors = FALSE)
 
-  plot(digizeit$t, digizeit$s, col = "red", type = "s", ylim = c(0, 1))
+  plot(digizeit$t, digizeit$s, col = "red", type = "s", ylim = c(0, 1), xlab = xlabel, ylab = ylabel)
   lines(survfit(Surv(time,flag)~1, data=IPD), col = "blue", conf.int = FALSE, mark.time = FALSE)
 
   return(IPD)

@@ -49,7 +49,7 @@ doSurvFix = function(survDf){
 
 #' reconIPD
 #' @export
-reconIPD = function(path, tags = list(), surv = NULL, risk = NULL, events = NULL){
+reconIPD = function(path, tags = list(), surv = NULL, risk = NULL, events = NULL, xlabel = "Time", ylabel = "Survival"){
   if (missing(path)) {
     survData <- doSurvFix(surv)
     riskData <- doRiskIndex(risk, survData)
@@ -75,7 +75,7 @@ reconIPD = function(path, tags = list(), surv = NULL, risk = NULL, events = NULL
       }
     }
   }
-  guyot(survData, riskData, tot.events = totEvents, tags)
+  guyot(survData, riskData, tot.events = totEvents, tags, xlabel = xlabel, ylabel = ylabel)
 }
 
 
